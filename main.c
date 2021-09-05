@@ -58,12 +58,11 @@ int main(int argc, char **argv)
 {
 	// param setup
 	t_program param;
-//	param.frame = 0;
-//	param.last_zoomed_frame = 0;
 
 //	param = process_args(argc, argv);
 
 	param.mlx = mlx_init();
+//	param.win = mlx_new_window(param.mlx, WIDTH, HEIGHT+18, "fract-ol");
 	param.win = mlx_new_window(param.mlx, WIDTH, HEIGHT, "fract-ol");
 
 	// const setup
@@ -91,9 +90,9 @@ int main(int argc, char **argv)
 	mlx_key_hook(param.win, key_hook, &param);
 	mlx_mouse_hook(param.win, mouse_hook, &param);
 	mlx_hook(param.win, 17, 0, close_window, &param);
-//	mlx_loop_hook(param.mlx, loop_hook, &param);
-
 	mlx_put_image_to_window(param.mlx, param.win, param.img.img_ptr, 0, 0);
+
+//	system("leaks fractol");
 
 	mlx_loop(param.mlx);
 	return 0;
