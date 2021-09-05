@@ -21,6 +21,7 @@ typedef struct s_img_inf {
 	char *buffer;
 } t_img_inf;
 
+// diverge: 発散とする値の二乗
 typedef struct s_program {
 	void *mlx;
 	void *win;

@@ -44,7 +44,6 @@ void	put_color(t_program *param, int pixel, int color)
 	param->img.buffer[pixel + 3] = (char)(color >> 24);
 }
 
-
 void	display(t_program *param)
 {
 	clock_t start;
@@ -78,7 +77,7 @@ int main(int argc, char **argv) {
 	param.cr2 = 0.7; // 定数実部 終点
 	param.ci1 = -1.5; // 定数虚部 始点
 	param.ci2 = 1.5; // 定数虚部 終点
-	param.diverge = 2.0; // 発散とする値
+	param.diverge = 4.0;
 	param.imax = 20; // 最大計算回数
 
 	// image setup
