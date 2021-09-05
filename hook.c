@@ -1,8 +1,6 @@
 #include <printf.h>
 #include "fractol.h"
 
-#define SHIFT_SIZE 0.1
-
 int key_hook(int key, t_program *param)
 {
 	// todo: remove printf
@@ -10,26 +8,26 @@ int key_hook(int key, t_program *param)
 	// ↑
 	if (key == 65362)
 	{
-		param->ci1 -= SHIFT_SIZE;
-		param->ci2 -= SHIFT_SIZE;
+		param->ci1 += param->shift_size;
+		param->ci2 += param->shift_size;
 	}
 	// ↓
 	else if (key == 65364)
 	{
-		param->ci1 += SHIFT_SIZE;
-		param->ci2 += SHIFT_SIZE;
+		param->ci1 -= param->shift_size;
+		param->ci2 -= param->shift_size;
 	}
 	// <-
 	else if (key == 65361)
 	{
-		param->cr1 += SHIFT_SIZE;
-		param->cr2 += SHIFT_SIZE;
+		param->cr1 -= param->shift_size;
+		param->cr2 -= param->shift_size;
 	}
 	// ->
 	else if (key == 65363)
 	{
-		param->cr1 -= SHIFT_SIZE;
-		param->cr2 -= SHIFT_SIZE;
+		param->cr1 += param->shift_size;
+		param->cr2 += param->shift_size;
 	}
 	// ESC
 	else if (key == 65307)
@@ -38,9 +36,25 @@ int key_hook(int key, t_program *param)
 		mlx_destroy_window(param->mlx, param->win);
 		exit(0);
 	}
+	// Ctrl
+	else if (key == 65507)
+		param->imax++;
+	// Opt
+	else if (key == 65406)
+		param->imax--;
+	// 1 - 5
+	else if (key == 49)
+		param->color = greyscale;
+	else if (key == 50)
+		param->color = reverse_greyscale;
+	else if (key == 51)
+		param->color = redscale;
+	else if (key == 52)
+		param->color = greenscale;
+	else if (key == 53)
+		param->color = bluescale;
 	else
 		return (0);
-	mlx_clear_window(param->mlx, param->win);
 	display(param);
 	mlx_put_image_to_window(param->mlx, param->win, param->img.img_ptr, 0, 0);
 	return (0);
@@ -54,23 +68,37 @@ int mouse_hook(int button,int x,int y, t_program *param)
 	// ↑ - zoom close
 	if (button == 4)
 	{
-		param->cr1 += SHIFT_SIZE * x / WIDTH;
-		param->cr2 -= SHIFT_SIZE * (1 - x / (double)WIDTH);
-		param->ci1 += SHIFT_SIZE * (1 - y / (double)HEIGHT);
-		param->ci2 -= SHIFT_SIZE * y / HEIGHT;
+		param->shift_size = (param->cr2 - param->cr1) * 0.1;
+		param->cr1 += param->shift_size * x / WIDTH;
+		param->cr2 -= param->shift_size * (1 - x / (double)WIDTH);
+		param->ci1 += param->shift_size * (1 - y / (double)HEIGHT);
+		param->ci2 -= param->shift_size * y / HEIGHT;
+		param->imax += 1;
 	}
 	// ↓ - zoom out
 	else if (button == 5)
 	{
-		param->cr1 -= SHIFT_SIZE * x / WIDTH;
-		param->cr2 += SHIFT_SIZE * (1 - x / (double)WIDTH);
-		param->ci1 -= SHIFT_SIZE * (1 - y / (double)HEIGHT);
-		param->ci2 += SHIFT_SIZE * y / HEIGHT;
+		param->shift_size = (param->cr2 - param->cr1) * 0.1;
+		param->cr1 -= param->shift_size * x / WIDTH;
+		param->cr2 += param->shift_size * (1 - x / (double)WIDTH);
+		param->ci1 -= param->shift_size * (1 - y / (double)HEIGHT);
+		param->ci2 += param->shift_size * y / HEIGHT;
+		param->imax -= 1;
 	}
 	else
 		return (1);
-	mlx_clear_window(param->mlx, param->win);
+	printf("param->imax: %d \n", param->imax);
+	printf("param->shift_size: %f \n", param->shift_size);
+	printf("param->cr1: %f \n", param->cr1);
+	printf("param->cr2: %f \n", param->cr2);
+	printf("param->ci1: %f \n", param->ci1);
+	printf("param->ci2: %f \n", param->ci2);
+	if (param->cr1 > param->cr2)
+		printf("ERROR: param->cr1 > param->cr2 \n");
+	if (param->ci1 > param->ci2)
+		printf("ERROR: param->ci2 > param->ci2 \n");
 	display(param);
+//	mlx_clear_window(param->mlx, param->win);
 	mlx_put_image_to_window(param->mlx, param->win, param->img.img_ptr, 0, 0);
 	return (0);
 }

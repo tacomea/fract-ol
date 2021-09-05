@@ -4,7 +4,7 @@ CC		= gcc
 #CFLAGS = -I$(INC) -O3 -I.. -g
 #CFLAG	= -Wall -Wextra -Werror
 NAME	= fractol
-SRC    	= main.c hook.c calculate.c
+SRC    	= main.c hook.c calculate.c color.c
 
 OBJDIR 			= ./obj
 OBJ		= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
