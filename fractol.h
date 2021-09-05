@@ -2,7 +2,7 @@
 #define FDF_FRACTOL_H
 
 #include "libft/libft.h"
-# include "minilibx/mlx.h"
+# include "minilibx-linux/mlx.h"
 
 typedef struct s_color {
 	double r;

@@ -4,13 +4,15 @@ CC		= gcc
 #CFLAGS = -I$(INC) -O3 -I.. -g
 #CFLAG	= -Wall -Wextra -Werror
 NAME	= fractol
-SRC    	= main.c draw.c
-#OBJDIR = ./obj
-#OBJ    = $(addprefix $(OBJDIR)/, $(SRCS:%.c=%.o))
-OBJ		= $(SRC:%.c=%.o)
-MLX		= minilibx
+SRC    	= main.c
+
+OBJDIR 			= ./obj
+OBJ		= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
+#OBJ				= $(SRC:%.c=%.o)
+
+MLX		= minilibx-linux
 LIBFT	= libft
-INCLUDE	= fdf.h
+INCLUDE	= fractol.h
 
 LFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(INCLIB) -lXext -lX11 -lm
 
@@ -18,21 +20,41 @@ LFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(INCLIB) -lXext -lX11 -lm
 
 all: $(NAME) run
 
+ifeq ($(UNAME), Linux)
+
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
+	@make -C $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ) -Llibft -lft -Lgnl -lgnl -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lbsd -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAG) -o $@ -c $<
-
-#$(OBJDIR)/%.o: %.c
-#	@-mkdir -p $(OBJDIR)
-#	@$(CC) $(CFLAG) $(INCLUDE) -o $@ -c $<
+$(OBJDIR)/%.o: %.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 clean:
-	rm -f $(OBJ) *~ core *.core
+	@make clean -C $(LIBFT)
 	@rm -rf $(OBJDIR)
 
+else
+
+$(NAME): $(OBJ)
+	@make -C $(LIBFT)
+	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
+
+#%.o: %.c
+#	$(CC) $(CFLAG) -o $@ -c $<
+
+$(OBJDIR)/%.o: %.c
+	@-mkdir -p $(OBJDIR)
+	@$(CC) $(CFLAG) -o $@ -c $<
+
+clean:
+	@make clean -C $(LIBFT)
+	rm -f $(OBJ) *~ core *.core
+
+endif
+
 fclean: clean
+	@make fclean -C $(LIBFT)
 	rm -f $(NAME)
 
 re: clean all
