@@ -74,14 +74,12 @@ int main(int argc, char **argv)
 	param.imax = 20; // 最大計算回数
 	param.shift_size = 0.4;
 
+	param.frame = 0;
+	param.last_zoomed_frame = 0;
+
 	// image setup
 	param.img.img_ptr = mlx_new_image(param.mlx, WIDTH, HEIGHT);
 	param.img.buffer = mlx_get_data_addr(param.img.img_ptr, &param.img.bits_per_pixel, &param.img.size_line, &param.img.endian);
-
-//	data.zoom = 30;
-//	data.rotation = 0.5;
-//	data.shift_x = 300;
-//	data.shift_y = 100;
 
 //	bresenham(10, 10, 300, 100, data);
 //	draw(&data);
@@ -91,8 +89,7 @@ int main(int argc, char **argv)
 	mlx_mouse_hook(param.win, mouse_hook, &param);
 	mlx_hook(param.win, 17, 0, close_window, &param);
 	mlx_put_image_to_window(param.mlx, param.win, param.img.img_ptr, 0, 0);
-
-//	system("leaks fractol");
+	mlx_loop_hook(param.mlx, loop_hook, &param);
 
 	mlx_loop(param.mlx);
 	return 0;
