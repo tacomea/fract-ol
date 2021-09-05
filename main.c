@@ -2,6 +2,27 @@
 #include <time.h>
 #include "fractol.h"
 
+t_program	process_args(int argc, char **argv)
+{
+	t_program param;
+
+	if (!ft_strncmp(argv[1], "M", 1))
+	{
+		param.fractal = mandelbrot;
+	}
+	else if (!ft_strncmp(argv[1], "J", 1))
+	{
+		param.fractal = julia;
+
+	}
+	else
+	{
+		ft_putstr_fd("usage:\tfractol -M\n\tfractol -J ", 2);
+		exit (0);
+	}
+	return (param);
+}
+
 void	display(t_program *param)
 {
 	clock_t start;
@@ -37,8 +58,12 @@ int main(int argc, char **argv)
 {
 	// param setup
 	t_program param;
+//	param.frame = 0;
+//	param.last_zoomed_frame = 0;
+
+//	param = process_args(argc, argv);
+
 	param.mlx = mlx_init();
-//	param.win = mlx_new_window(param.mlx, WIDTH, HEIGHT+18, "fract-ol");
 	param.win = mlx_new_window(param.mlx, WIDTH, HEIGHT, "fract-ol");
 
 	// const setup
@@ -48,7 +73,7 @@ int main(int argc, char **argv)
 	param.ci2 = 1.5; // 定数虚部 終点
 	param.diverge = 4;
 	param.imax = 20; // 最大計算回数
-	param.shift_size = 0.1;
+	param.shift_size = 0.4;
 
 	// image setup
 	param.img.img_ptr = mlx_new_image(param.mlx, WIDTH, HEIGHT);
@@ -66,9 +91,9 @@ int main(int argc, char **argv)
 	mlx_key_hook(param.win, key_hook, &param);
 	mlx_mouse_hook(param.win, mouse_hook, &param);
 	mlx_hook(param.win, 17, 0, close_window, &param);
-	mlx_put_image_to_window(param.mlx, param.win, param.img.img_ptr, 0, 0);
+//	mlx_loop_hook(param.mlx, loop_hook, &param);
 
-//	system("leaks fractol");
+	mlx_put_image_to_window(param.mlx, param.win, param.img.img_ptr, 0, 0);
 
 	mlx_loop(param.mlx);
 	return 0;

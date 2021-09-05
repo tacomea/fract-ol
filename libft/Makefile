@@ -16,7 +16,7 @@ $(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAG) -o $@ -c $<
 
 clean:
-	rm -f $(OBJS) $(B_OBJS)
+	rm -f $(OBJS)
 	rm -rf $(OBJDIR)
 
 fclean: clean

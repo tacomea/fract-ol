@@ -29,6 +29,11 @@ enum e_color {
 	bluescale,
 };
 
+enum e_fractal {
+	mandelbrot,
+	julia,
+};
+
 // diverge: 発散とする値の二乗
 // imax: max num of loop
 typedef struct s_program {
@@ -42,7 +47,10 @@ typedef struct s_program {
 	int				imax;
 	double			shift_size;
 	enum e_color	color;
+	enum e_fractal	fractal;
 	t_img_inf		img;
+//	size_t			frame;
+//	size_t			last_zoomed_frame;
 } t_program;
 
 //typedef struct s_fdf
@@ -74,6 +82,7 @@ t_color	color_init(double r, double g, double b);
 int	close_window(int keycode, t_program *param);
 int	mouse_hook(int button, int x, int y, t_program *param);
 int	key_hook(int key, t_program *param);
+//int	loop_hook(t_program *param);
 
 // draw.c
 //void bresenham(double x, double y, double x1, double y1, t_fdf *data);
