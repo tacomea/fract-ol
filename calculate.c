@@ -24,7 +24,7 @@
 //}
 
 // 40727.000000
-int calc_mandelbrot(t_program *param, double cr, double ci)
+int calc_mandelbrot(t_var *var, double cr, double ci)
 {
 	double	x;
 	double	y;
@@ -37,12 +37,33 @@ int calc_mandelbrot(t_program *param, double cr, double ci)
 	x2 = 0;
 	y2 = 0;
 	i = 0;
-	while (x2 + y2 <= param->diverge && i < param->imax)
+	while (x2 + y2 <= var->diverge && i < var->imax)
 	{
 		y = 2 * x * y + ci;
 		x = x2 - y2 + cr;
 		x2 = x * x;
 		y2 = y * y;
+		i++;
+	}
+	return (i);
+}
+
+// calculation speed: 590079.000000
+int calc_julia(t_var *var, double x, double y)
+{
+	double	xn;
+	double	yn;
+	int		i;
+
+	xn = 0.0;
+	yn = 0.0;
+	i = 0;
+	while (xn * xn + yn * yn <= var->diverge && i < var->imax)
+	{
+		xn = x * x - y * y + var->cr;
+		yn = 2.0 * x * y + var->ci;
+		x = xn;
+		y = yn;
 		i++;
 	}
 	return (i);

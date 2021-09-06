@@ -18,7 +18,7 @@ LFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(INCLIB) -lXext -lX11 -lm
 
 #LIBS 	= -framework OpenGL -framework AppKit
 
-all: $(NAME) run
+all: $(NAME) m
 
 ifeq ($(UNAME), Linux)
 
@@ -53,11 +53,15 @@ clean:
 
 endif
 
+m: $(NAME)
+	./$(NAME) M
+
+j: $(NAME)
+	./$(NAME) J -0.3 -0.63
+
 fclean: clean
 	@make fclean -C $(LIBFT)
 	rm -f $(NAME)
 
 re: clean all
 
-run:
-	./$(NAME)
