@@ -51,6 +51,7 @@ typedef struct s_program {
 	t_img_inf		img;
 	unsigned int 	frame;
 	unsigned int	last_zoomed_frame;
+//	char	test;
 } t_program;
 
 //typedef struct s_fdf
