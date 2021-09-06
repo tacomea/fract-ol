@@ -20,6 +20,9 @@ int key_hook(int key, t_program *param)
 	{
 		param->ci1 += param->shift_size;
 		param->ci2 += param->shift_size;
+		param->last_zoomed_frame++;
+		param->frame++;
+		printf("$$$$param->frame: %u $$$$\n", param->frame);
 	}
 	// ↓
 	else if (key == 65364)
@@ -83,6 +86,8 @@ int mouse_hook(int button,int x,int y, t_program *param)
 		if (param->frame ==  param->last_zoomed_frame)
 		{
 //			printf("returned!! zoom_cnt: %d \n", zoom_cnt++);
+			param->last_zoomed_frame++;
+			param->frame++;
 			return (1);
 		}
 		param->shift_size = (param->cr2 - param->cr1) * 0.1;
