@@ -67,16 +67,14 @@ int mouse_hook(int button,int x,int y, t_program *param)
 	if (button == 4)
 	{
 		if (param->var->frame ==  param->var->last_zoomed_frame)
-		{
-			param->var->last_zoomed_frame++;
-			param->var->frame++;
 			return (1);
-		}
 		param->var->shift_size = (param->var->r_end - param->var->r_start) * 0.1;
 		param->var->r_start += param->var->shift_size * x / WIDTH;
 		param->var->r_end -= param->var->shift_size * (1 - x / (double)WIDTH);
-		param->var->i_start += param->var->shift_size * (1 - y / (double)HEIGHT);
-		param->var->i_end -= param->var->shift_size * y / HEIGHT;
+//		param->var->i_start += param->var->shift_size * (1 - y / (double)HEIGHT);
+//		param->var->i_end -= param->var->shift_size * y / HEIGHT;
+		param->var->i_start += param->var->shift_size * y / HEIGHT;
+		param->var->i_end -= param->var->shift_size * (1 - y / (double)HEIGHT);
 		param->var->imax += 1;
 		param->var->last_zoomed_frame = param->var->frame;
 	}
@@ -88,8 +86,8 @@ int mouse_hook(int button,int x,int y, t_program *param)
 		param->var->shift_size = (param->var->r_end - param->var->r_start) * 0.1;
 		param->var->r_start -= param->var->shift_size * x / WIDTH;
 		param->var->r_end += param->var->shift_size * (1 - x / (double)WIDTH);
-		param->var->i_start -= param->var->shift_size * (1 - y / (double)HEIGHT);
-		param->var->i_end += param->var->shift_size * y / HEIGHT;
+		param->var->i_start -= param->var->shift_size * y / HEIGHT;
+		param->var->i_end += param->var->shift_size * (1 - y / (double)HEIGHT);
 		param->var->imax -= 1;
 		param->var->last_zoomed_frame = param->var->frame;
 	}

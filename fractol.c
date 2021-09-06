@@ -8,6 +8,7 @@ void	free_all_ptr(t_program *param)
 	mlx_destroy_window(param->mlx, param->win);
 	mlx_destroy_display(param->mlx);
 	free(param->mlx);
+	free(param->var);
 //	free(param->img);
 //	free(param->win);
 //	free(param->img.img_ptr);
@@ -23,9 +24,9 @@ void	process_args(int argc, char **argv, t_var *var)
 		var->i_start = -1.5;
 		var->i_end = 1.5;
 		var->imax = 20;
-		var->shift_size = 0.4;
+		var->shift_size = 0.3;
 	}
-	else if (argc != 1 && !ft_strncmp(argv[1], "J", 1))
+	else if (argc > 3 && !ft_strncmp(argv[1], "J", 1))
 	{
 		var->fractal = julia;
 		var->r_start = -1.5;
@@ -33,9 +34,19 @@ void	process_args(int argc, char **argv, t_var *var)
 		var->i_start = -1.5;
 		var->i_end = 1.5;
 		var->imax = 400;
-		var->shift_size = 0.4;
+		var->shift_size = 0.3;
 		var->cr = atof(argv[2]);
 		var->ci = atof(argv[3]);
+	}
+	else if (argc != 1 && !ft_strncmp(argv[1], "B", 1))
+	{
+		var->fractal = burningship;
+		var->r_start = -2.5;
+		var->r_end = 1.5;
+		var->i_start = -2.5;
+		var->i_end = 1.5;
+		var->imax = 20;
+		var->shift_size = 0.4;
 	}
 	else
 	{
@@ -55,11 +66,11 @@ void	display(t_program *param)
 	int ix;
 	int iy;
 
-//	start = clock();
+	start = clock();
 	dr = (param->var->r_end - param->var->r_start) / WIDTH; // 実部(横)刻み幅
 	di = (param->var->i_end - param->var->i_start) / HEIGHT; // 虚部(縦)刻み幅
-	for (i_current = param->var->i_start, iy = HEIGHT; i_current <= param->var->i_end; i_current += di, iy--) // 定数虚部（縦）
-//	for (ci = param->var->i_start, iy = 0; ci <= param->var->i_end; ci += dci, iy++) // 定数虚部（縦）
+//	for (i_current = param->var->i_start, iy = HEIGHT; i_current <= param->var->i_end; i_current += di, iy--) // 定数虚部（縦）
+	for (i_current = param->var->i_start, iy = 0; i_current <= param->var->i_end; i_current += di, iy++) // 定数虚部（縦）
 	{
 		for (r_current = param->var->r_start, ix = 0; r_current <= param->var->r_end; r_current += dr, ix++)
 		{
@@ -68,6 +79,8 @@ void	display(t_program *param)
 				cnt_itr = calc_mandelbrot(param->var, r_current, i_current);
 			else if (param->var->fractal == julia)
 				cnt_itr = calc_julia(param->var, r_current, i_current);
+			else if (param->var->fractal == burningship)
+				cnt_itr = calc_burningship(param->var, r_current, i_current);
 			else
 				return ;
 			int color = color_to_int(color_init(0, 0, 0));

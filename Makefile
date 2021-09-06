@@ -4,11 +4,10 @@ CC		= gcc
 #CFLAGS = -I$(INC) -O3 -I.. -g
 #CFLAG	= -Wall -Wextra -Werror
 NAME	= fractol
-SRC    	= main.c hook.c calculate.c color.c
+SRC    	= fractol.c hook.c calculate.c color.c
 
-OBJDIR 			= ./obj
+OBJDIR 	= ./obj
 OBJ		= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
-#OBJ				= $(SRC:%.c=%.o)
 
 MLX		= minilibx-linux
 LIBFT	= libft
@@ -58,6 +57,9 @@ m: $(NAME)
 
 j: $(NAME)
 	./$(NAME) J -0.3 -0.63
+
+b: $(NAME)
+	./$(NAME) B
 
 fclean: clean
 	@make fclean -C $(LIBFT)

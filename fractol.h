@@ -68,6 +68,7 @@ void	free_all_ptr(t_program *param);
 // calculate.c
 int calc_mandelbrot(t_var *var, double cr, double ci);
 int calc_julia(t_var *var, double x, double y);
+int calc_burningship(t_var *var, double cr, double ci);
 
 // color.c
 void	put_color(t_program *param, int pixel, int color);
