@@ -1,137 +1,123 @@
-#include <time.h>
-#include "fractol.h"
+#include <stdlib.h>
 #include <printf.h>
+#include "fractol.h"
 
-void	free_all_ptr(t_program *param)
+#define DEFAULT_IMAX 20
+#define DEFAULT_SHIFT_SIZE 0.3
+
+void	init_params(t_param *param)
 {
-	mlx_destroy_image(param->mlx, param->img.img_ptr);
-	mlx_destroy_window(param->mlx, param->win);
-	mlx_destroy_display(param->mlx);
-	free(param->mlx);
-	free(param->var);
-//	free(param->img);
-//	free(param->win);
-//	free(param->img.img_ptr);
+	t_img_inf	*img;
+
+	param->var = (t_var *)malloc(sizeof(t_var));
+	if (!param->var)
+		exit(1);
+	param->var->frame = 0;
+	param->var->last_zoomed_frame = 0;
+	param->var->color = greyscale;
+	param->mlx = mlx_init();
+	param->win = mlx_new_window(param->mlx, WIDTH, HEIGHT, "fract-ol");
+	param->img.img_ptr = mlx_new_image(param->mlx, WIDTH, HEIGHT);
+	img = &param->img;
+	img->buffer = mlx_get_data_addr(img->img_ptr,
+			&img->bits_per_pixel, &img->size_line, &img->endian);
 }
 
-void	process_args(int argc, char **argv, t_var *var)
+void	init_vars(t_var *var)
 {
-	if (argc != 1 && !ft_strncmp(argv[1], "M", 1))
+	var->imax = DEFAULT_IMAX;
+	var->shift_size = DEFAULT_SHIFT_SIZE;
+	if (var->fractal == mandelbrot)
 	{
-		var->fractal = mandelbrot;
-		var->r_start = -2.3;
-		var->r_end = 0.7;
-		var->i_start = -1.5;
-		var->i_end = 1.5;
-		var->imax = 20;
-		var->shift_size = 0.3;
+		var->start.r = -2.3;
+		var->end.r = 0.7;
+		var->start.i = -1.5;
+		var->end.i = 1.5;
 	}
-	else if (argc > 3 && !ft_strncmp(argv[1], "J", 1))
+	else if (var->fractal == julia)
 	{
-		var->fractal = julia;
-		var->r_start = -1.5;
-		var->r_end = 1.5;
-		var->i_start = -1.5;
-		var->i_end = 1.5;
+		var->start.r = -1.5;
+		var->end.r = 1.5;
+		var->start.i = -1.5;
+		var->end.i = 1.5;
 		var->imax = 400;
-		var->shift_size = 0.3;
-		var->cr = atof(argv[2]);
-		var->ci = atof(argv[3]);
 	}
-	else if (argc != 1 && !ft_strncmp(argv[1], "B", 1))
+	else if (var->fractal == burningship)
 	{
-		var->fractal = burningship;
-		var->r_start = -2.5;
-		var->r_end = 1.5;
-		var->i_start = -2.5;
-		var->i_end = 1.5;
-		var->imax = 20;
+		var->start.r = -2.5;
+		var->end.r = 1.5;
+		var->start.i = -2.5;
+		var->end.i = 1.5;
 		var->shift_size = 0.4;
 	}
+}
+
+void	process_args(int argc, char **argv, t_param *param)
+{
+	if (argc != 1 && !ft_strncmp(argv[1], "M", 1))
+		param->var->fractal = mandelbrot;
+	else if (argc > 3 && !ft_strncmp(argv[1], "J", 1))
+	{
+		param->var->fractal = julia;
+		param->var->c.r = simple_atof(argv[2]);
+		param->var->c.i = simple_atof(argv[3]);
+	}
+	else if (argc != 1 && !ft_strncmp(argv[1], "B", 1))
+		param->var->fractal = burningship;
 	else
 	{
-//		param->fractal = mandelbrot;
-		ft_putstr_fd("usage:\tfractol -M\n\tfractol -J\n", 2);
-		exit (0);
+		ft_putstr_fd("usage:\tfractol -M\n\tfractol -J [R] [I]\n\tfractol -B\n", 2);
+		exit(free_all_ptr(param, EXIT_FAILURE));
 	}
 }
 
-void	display(t_program *param)
+//clock_t		start;
+//start = clock();
+//printf("calculation speed: %f \n", (double)(clock() - start));
+void	display(t_param *param)
 {
-	clock_t start;
-	double	r_current;
-	double	i_current;
-	double	dr;
-	double	di;
-	int ix;
-	int iy;
+	t_complex	current;
+	int			ix;
+	int			iy;
+	double		cnt_itr;
 
-	start = clock();
-	dr = (param->var->r_end - param->var->r_start) / WIDTH; // 実部(横)刻み幅
-	di = (param->var->i_end - param->var->i_start) / HEIGHT; // 虚部(縦)刻み幅
-//	for (i_current = param->var->i_start, iy = HEIGHT; i_current <= param->var->i_end; i_current += di, iy--) // 定数虚部（縦）
-	for (i_current = param->var->i_start, iy = 0; i_current <= param->var->i_end; i_current += di, iy++) // 定数虚部（縦）
+	current.i = param->var->start.i;
+	iy = -1;
+	while (++iy <= HEIGHT)
 	{
-		for (r_current = param->var->r_start, ix = 0; r_current <= param->var->r_end; r_current += dr, ix++)
+		current.r = param->var->start.r;
+		ix = -1;
+		while (++ix <= WIDTH)
 		{
-			double cnt_itr;
 			if (param->var->fractal == mandelbrot)
-				cnt_itr = calc_mandelbrot(param->var, r_current, i_current);
+				cnt_itr = calc_mandelbrot(param->var, current.r, current.i);
 			else if (param->var->fractal == julia)
-				cnt_itr = calc_julia(param->var, r_current, i_current);
+				cnt_itr = calc_julia(param->var, current.r, current.i);
 			else if (param->var->fractal == burningship)
-				cnt_itr = calc_burningship(param->var, r_current, i_current);
-			else
-				return ;
-			int color = color_to_int(color_init(0, 0, 0));
-			if (param->var->color == greyscale)
-				color = color_to_int(color_init(cnt_itr/param->var->imax, cnt_itr/param->var->imax, cnt_itr/param->var->imax));
-			else if (param->var->color == reverse_greyscale)
-				color = color_to_int(color_init(1 - cnt_itr/param->var->imax, 1 - cnt_itr/param->var->imax, 1 - cnt_itr/param->var->imax));
-			else if (param->var->color == redscale)
-				color = color_to_int(color_init(1 - cnt_itr/param->var->imax, 0, 0));
-			else if (param->var->color == greenscale)
-				color = color_to_int(color_init(0, 1 - cnt_itr/param->var->imax, 0));
-			else if (param->var->color == bluescale)
-				color = color_to_int(color_init(0, 0, 1 - cnt_itr/param->var->imax));
-			put_color(param, (iy * param->img.size_line) + (ix * 4), color);
+				cnt_itr = calc_burningship(param->var, current.r, current.i);
+			put_color(param, (iy * param->img.size_line) + (ix * 4),
+				  route_color(param->var, cnt_itr));
+			current.r += (param->var->end.r - param->var->start.r) / WIDTH;
 		}
+		current.i += (param->var->end.i - param->var->start.i) / HEIGHT;
 	}
-	printf("calculation speed: %f \n", (double)(clock() - start));
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	// param setup
-	t_program param;
+	t_param	param;
 
-	printf("sizeof(t_program): %zu \n", sizeof(t_program));
-
-	// var setup
-	param.var = (t_var*)malloc(sizeof(t_var));
-	if (!param.var)
-		return (1);
-	param.var->diverge = 4;
-	param.var->frame = 0;
-	param.var->last_zoomed_frame = 0;
-
-	process_args(argc, argv, param.var);
-
-	param.mlx = mlx_init();
-	param.win = mlx_new_window(param.mlx, WIDTH, HEIGHT, "fract-ol");
-
-	param.img.img_ptr = mlx_new_image(param.mlx, WIDTH, HEIGHT);
-	param.img.buffer = mlx_get_data_addr(param.img.img_ptr, &param.img.bits_per_pixel, &param.img.size_line, &param.img.endian);
-
+	init_params(&param);
+	process_args(argc, argv, &param);
+	init_vars(param.var);
 	display(&param);
-
 	mlx_key_hook(param.win, key_hook, &param);
 	mlx_mouse_hook(param.win, mouse_hook, &param);
-	mlx_hook(param.win, 17, 0, close_window, &param);
+//	mlx_hook(param.win, 17, 0, close_window, &param);
+	mlx_hook(param.win, 33, 1L << 17, close_window, &param);
+	mlx_expose_hook(param.win, open_window, &param);
 	mlx_loop_hook(param.mlx, loop_hook, &param);
-
 	mlx_put_image_to_window(param.mlx, param.win, param.img.img_ptr, 0, 0);
-
 	mlx_loop(param.mlx);
-	return 0;
+	return (EXIT_SUCCESS);
 }

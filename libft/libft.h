@@ -1,7 +1,7 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-#include <unistd.h>
+# include <unistd.h>
 
 typedef struct s_list
 {
@@ -77,32 +77,5 @@ t_list			*ft_lstmap(t_list *lst,
 /*
 ** Extra
 */
-
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-# include <stdlib.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
-
-typedef struct s_fd {
-	int			fd;
-	char		rem[BUFFER_SIZE + 1];
-	ssize_t		rtn;
-	struct s_fd	*next;
-	struct s_fd	*prev;
-}	t_fd;
-
-char	*str_append(char **dest, char *src, ssize_t l);
-char	*get_next_line(int fd);
-
-int		ft_strchr_gnl(const char *str, int c);
-int		data_check(t_fd *tmp, char **line);
-
-// ft_split.c
-int	count_word(char const *s, char c);
-
 
 #endif

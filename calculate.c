@@ -1,5 +1,5 @@
 #include "fractol.h"
-#define MOD(a) (((a) < 0) ? -(a) : (a))
+#include <math.h>
 
 // 46577.000000
 //int calc_mandelbrot(t_program *param, double cr, double ci)
@@ -25,7 +25,7 @@
 //}
 
 // 40727.000000
-int calc_mandelbrot(t_var *var, double cr, double ci)
+int	calc_mandelbrot(t_var *var, double cr, double ci)
 {
 	double	x;
 	double	y;
@@ -38,7 +38,7 @@ int calc_mandelbrot(t_var *var, double cr, double ci)
 	x2 = 0;
 	y2 = 0;
 	i = 0;
-	while (x2 + y2 <= var->diverge && i < var->imax)
+	while (x2 + y2 <= DIVERGE && i < var->imax)
 	{
 		y = 2 * x * y + ci;
 		x = x2 - y2 + cr;
@@ -59,7 +59,7 @@ int calc_mandelbrot(t_var *var, double cr, double ci)
 //	xn = 0.0;
 //	yn = 0.0;
 //	i = 0;
-//	while (xn * xn + yn * yn <= var->diverge && i < var->imax)
+//	while (xn * xn + yn * yn <= DIVERGE && i < var->imax)
 //	{
 //		xn = x * x - y * y + var->cr;
 //		yn = 2.0 * x * y + var->ci;
@@ -71,7 +71,7 @@ int calc_mandelbrot(t_var *var, double cr, double ci)
 //}
 
 // calculation speed: 292033.000000
-int calc_julia(t_var *var, double x, double y)
+int	calc_julia(t_var *var, double x, double y)
 {
 	double	x2;
 	double	y2;
@@ -80,10 +80,10 @@ int calc_julia(t_var *var, double x, double y)
 	x2 = x * x;
 	y2 = y * y;
 	i = 0;
-	while (x2 + y2 <= var->diverge && i < var->imax)
+	while (x2 + y2 <= DIVERGE && i < var->imax)
 	{
-		y = 2 * x * y + var->ci;
-		x = x2 - y2 + var->cr;
+		y = 2 * x * y + var->c.i;
+		x = x2 - y2 + var->c.r;
 		x2 = x * x;
 		y2 = y * y;
 		i++;
@@ -103,7 +103,7 @@ int calc_julia(t_var *var, double x, double y)
 //	zr = 0.0;
 //	zi = 0.0;
 //	i = 0;
-//	while (zr * zr + zi * zi <= var->diverge && i < var->imax)
+//	while (zr * zr + zi * zi <= DIVERGE && i < var->imax)
 //	{
 //		zrn = zr * zr - zi * zi + cr;
 //		zin = 2.0 * MOD(zr) * MOD(zi) + ci;
@@ -115,7 +115,7 @@ int calc_julia(t_var *var, double x, double y)
 //}
 
 // calculation speed: 44161.000000
-int calc_burningship(t_var *var, double cr, double ci)
+int	calc_burningship(t_var *var, double cr, double ci)
 {
 	double	x;
 	double	y;
@@ -128,9 +128,9 @@ int calc_burningship(t_var *var, double cr, double ci)
 	x2 = 0;
 	y2 = 0;
 	i = 0;
-	while (x2 + y2 <= var->diverge && i < var->imax)
+	while (x2 + y2 <= DIVERGE && i < var->imax)
 	{
-		y = 2.0 * MOD(x) * MOD(y) + ci;
+		y = 2.0 * fabs(x) * fabs(y) + ci;
 		x = x2 - y2 + cr;
 		x2 = x * x;
 		y2 = y * y;

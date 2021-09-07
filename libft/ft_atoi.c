@@ -1,4 +1,3 @@
-#include <libc.h>
 #include <limits.h>
 #include "libft.h"
 

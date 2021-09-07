@@ -4,7 +4,7 @@ CC		= gcc
 #CFLAGS = -I$(INC) -O3 -I.. -g
 #CFLAG	= -Wall -Wextra -Werror
 NAME	= fractol
-SRC    	= fractol.c hook.c calculate.c color.c
+SRC    	= fractol.c hook.c calculate.c color.c simple_atof.c misc.c
 
 OBJDIR 	= ./obj
 OBJ		= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
@@ -23,20 +23,18 @@ ifeq ($(UNAME), Linux)
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
+	@make -C $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) -Llibft -lft -Lgnl -lgnl -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lbsd -o $(NAME)
 
 $(OBJDIR)/%.o: %.c
 	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
-clean:
-	@make clean -C $(LIBFT)
-	@rm -rf $(OBJDIR)
-
 else
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
+	@make -C $(MLX)
 	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
 
 #%.o: %.c
@@ -46,11 +44,12 @@ $(OBJDIR)/%.o: %.c
 	@-mkdir -p $(OBJDIR)
 	@$(CC) $(CFLAG) -o $@ -c $<
 
+endif
+
 clean:
 	@make clean -C $(LIBFT)
-	rm -f $(OBJ) *~ core *.core
-
-endif
+	@make clean -C $(MLX)
+	@rm -rf $(OBJDIR)
 
 m: $(NAME)
 	./$(NAME) M
@@ -63,6 +62,7 @@ b: $(NAME)
 
 fclean: clean
 	@make fclean -C $(LIBFT)
+	@make fclean -C $(MLX)
 	rm -f $(NAME)
 
 re: clean all
