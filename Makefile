@@ -2,7 +2,7 @@ INC		= /usr/X11/include
 INCLIB	= $(INC)/../lib
 CC		= gcc
 #CFLAGS = -I$(INC) -O3 -I.. -g
-#CFLAG	= -Wall -Wextra -Werror
+CFLAG	= -Wall -Wextra -Werror
 NAME	= fractol
 SRC    	= fractol.c hook.c calculate.c color.c simple_atof.c misc.c
 
@@ -46,6 +46,8 @@ $(OBJDIR)/%.o: %.c
 
 endif
 
+bonus: $(NAME)
+
 clean:
 	@make clean -C $(LIBFT)
 	@make clean -C $(MLX)
@@ -62,8 +64,9 @@ b: $(NAME)
 
 fclean: clean
 	@make fclean -C $(LIBFT)
-	@make fclean -C $(MLX)
+	@make clean -C $(MLX)
 	rm -f $(NAME)
 
 re: clean all
 
+.PHONY: all clean fclean re bonus m j b

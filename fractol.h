@@ -39,7 +39,6 @@ enum e_fractal {
 };
 
 typedef struct s_var {
-//	double			diverge;
 	int				imax;
 	t_complex		c;
 	t_complex		start;
