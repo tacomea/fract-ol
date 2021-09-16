@@ -67,6 +67,6 @@ fclean: clean
 	@make clean -C $(MLX)
 	rm -f $(NAME)
 
-re: clean all
+re: fclean all
 
 .PHONY: all clean fclean re bonus m j b
