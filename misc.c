@@ -14,7 +14,5 @@ int	free_all_ptr(t_param *param, int status)
 	mlx_destroy_display(param->mlx);
 	free(param->mlx);
 	free(param->var);
-	free(param->win);
-	free(param->img.img_ptr);
 	return (status);
 }

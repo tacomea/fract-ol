@@ -74,7 +74,7 @@ int		rgb_to_int(double r, double g, double b);
 int		route_color(t_var *var, double cnt_itr);
 
 // hook.c
-int		close_window(int keycode, t_param *param);
+int		close_window(t_param *param);
 int		mouse_hook(int button, int x, int y, t_param *param);
 int		key_hook(int key, t_param *param);
 int		loop_hook(t_param *param);

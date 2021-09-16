@@ -113,7 +113,6 @@ int	main(int argc, char **argv)
 	display(&param);
 	mlx_key_hook(param.win, key_hook, &param);
 	mlx_mouse_hook(param.win, mouse_hook, &param);
-	mlx_hook(param.win, 17, 0, close_window, &param);
 	mlx_hook(param.win, 33, 1L << 17, close_window, &param);
 	mlx_expose_hook(param.win, open_window, &param);
 	mlx_loop_hook(param.mlx, loop_hook, &param);

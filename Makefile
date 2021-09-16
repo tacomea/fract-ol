@@ -17,7 +17,7 @@ LFLAGS = -L$(MLX) -lmlx -L$(LIBFT) -lft -L$(INCLIB) -lXext -lX11 -lm
 
 #LIBS 	= -framework OpenGL -framework AppKit
 
-all: $(NAME) m
+all: $(NAME)
 
 ifeq ($(UNAME), Linux)
 

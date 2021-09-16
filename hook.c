@@ -70,9 +70,8 @@ int	mouse_hook(int button, int x, int y, t_param *param)
 	return (EXIT_SUCCESS);
 }
 
-int	close_window(int keycode, t_param *param)
+int	close_window(t_param *param)
 {
-	(void)keycode;
 	exit(free_all_ptr(param, EXIT_SUCCESS));
 }
 
