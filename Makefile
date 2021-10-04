@@ -57,7 +57,7 @@ m: $(NAME)
 	./$(NAME) M
 
 j: $(NAME)
-	./$(NAME) J -0.3 -0.63
+	./$(NAME) J
 
 b: $(NAME)
 	./$(NAME) B

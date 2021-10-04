@@ -60,8 +60,7 @@ typedef struct s_param {
 }	t_param;
 
 // main.c
-void	display(t_param *param);
-int		free_all_ptr(t_param *param, int status);
+void	create_img(t_param *param);
 
 // calculate.c
 int		calc_mandelbrot(t_var *var, double cr, double ci);
@@ -83,6 +82,7 @@ int		open_window(t_param *param);
 // misc.c
 void	shift(double *start, double *end, double shift_size);
 int		free_all_ptr(t_param *param, int status);
+void	register_hooks(t_param *param);
 
 // simple_atof.c
 double	simple_atof(char *str);

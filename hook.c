@@ -37,7 +37,7 @@ int	key_hook(int key, t_param *param)
 		var->color = key - ONE;
 	else
 		return (EXIT_FAILURE);
-	display(param);
+	create_img(param);
 	mlx_put_image_to_window(param->mlx, param->win, param->img.img_ptr, 0, 0);
 	return (EXIT_SUCCESS);
 }
@@ -65,7 +65,7 @@ int	mouse_hook(int button, int x, int y, t_param *param)
 		param->var->end.i += param->var->shift_size * (1 - y / (double)HEIGHT);
 		param->var->imax -= 1;
 	}
-	display(param);
+	create_img(param);
 	mlx_put_image_to_window(param->mlx, param->win, param->img.img_ptr, 0, 0);
 	return (EXIT_SUCCESS);
 }

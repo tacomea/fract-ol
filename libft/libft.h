@@ -78,4 +78,5 @@ t_list			*ft_lstmap(t_list *lst,
 ** Extra
 */
 
+
 #endif

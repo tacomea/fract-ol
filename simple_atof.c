@@ -55,3 +55,20 @@ double	simple_atof(char *str)
 	}
 	return (sign * rtn);
 }
+
+//#include "printf.h"
+//#include <stdlib.h>
+//
+//int main()
+//{
+//	{
+//		char *str = "-12.12";
+//		printf("ft: %f \n", simple_atof(str));
+//		printf("li: %f \n", atof(str));
+//	}
+//	{
+//		char *str = "-12.1212121212";
+//		printf("ft: %f \n", simple_atof(str));
+//		printf("li: %f \n", atof(str));
+//	}
+//}
