@@ -2,6 +2,14 @@
 #include <math.h>
 
 // 46577.000000
+// z = a + bi
+// z0 = a0 + b0
+// ^2 = zr^2 + 2abi + bi^2
+//    = zr^2 + bi^2 + 2zrbi
+//    = zr^2 - b^2 + 2zrbi
+//f(z) = z^2 + Cという関数を、z0 = 0から始めて、
+//z1 = f(z0), z2 = f(z1), z3 = f(z2), …
+//とくり返し計算して数列を作っていったときに、k → ∞で|zk|が発散しない複素数Cの集合
 //int calc_mandelbrot(t_program *param, double cr, double ci)
 //{
 //	double	zr;
