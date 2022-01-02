@@ -104,4 +104,5 @@ make
 ./fractol # ヘルプメッセージが出力されます
 ```
 
-# デモ画面
+# デモ
+![demo.gif](https://github.com/tacomeet/fract-ol/blob/master/gif/fracto.gif)
