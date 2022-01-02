@@ -1,4 +1,8 @@
 # アプリの概要
+フラクタルを表示するプログラムです！
+
+# デモ
+![demo.gif](https://github.com/tacomeet/fract-ol/blob/master/gif/demo.gif)
 
 # 使用言語
 
@@ -104,5 +108,3 @@ make
 ./fractol # ヘルプメッセージが出力されます
 ```
 
-# デモ
-![demo.gif](https://github.com/tacomeet/fract-ol/blob/master/gif/demo.gif)
