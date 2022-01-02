@@ -105,4 +105,4 @@ make
 ```
 
 # デモ
-![demo.gif](https://github.com/tacomeet/fract-ol/blob/master/gif/fracto.gif)
+![demo.gif](https://github.com/tacomeet/fract-ol/blob/master/gif/demo.gif)
