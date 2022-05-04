@@ -102,8 +102,8 @@ int	calc_burningship(t_var *var, double cr, double ci)
 詳しくは[こちら](https://github.com/42Paris/minilibx-linux/)をご覧ください！
 
 ```bash
-git clone https://github.com/tacomeet/fract-ol --recursive
-cd fract-ol
+git clone https://github.com/tacomeet/fractal --recursive
+cd fractal
 make
 ./fractol # ヘルプメッセージが出力されます
 ```
